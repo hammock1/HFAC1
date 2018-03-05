@@ -1,23 +1,27 @@
 window.onload = initPage;
+var itemName;
 var request;
+var thumbs;
 
 function initPage(){
 	
 //find the thumbnails on the page
-var thumbs = document.getElementById('thumbnailPane').getElementsByTagName('img');
-
+ thumbs = document.getElementById('thumbnailPane').getElementsByTagName('img');
+ 
+ 
  //set the handler for each image
  for(var i =0; i < thumbs.length; i++){
 	  
-	  var image  = thumbs[i];
+	   image  = thumbs[i];
 	  
 	  //create the onclick function
 	  image.onclick = function(){
 		  
 		  //find the full-size image name 
 		  var detailURL = 'images/' + this.title + '-detail.jpg';
-		  
+		  itemName = this.title; 
 		  document.getElementById('itemDetail').src = detailURL;
+		  getDetails(itemName);	
 		  
 		
 		  
@@ -26,8 +30,8 @@ var thumbs = document.getElementById('thumbnailPane').getElementsByTagName('img'
 	  
   }
 
-}	
-
+}
+//this create a request object
 function createRequests(){
 	try{
 		
@@ -54,7 +58,7 @@ function createRequests(){
 	return request;
 	
 }
-
+//this get the details of the image 
 function getDetails(itemName){
 	
 	request = createRequests();
@@ -73,5 +77,20 @@ function getDetails(itemName){
 	
 	
 }
+//this displays the details of the image
+function displayDetails(){
+	if(request.readyState == 4){
+		
+		if(request.status == 200){
+			detailDiv = document.getElementById('description');
+			detailDiv.innerHTML = request.responseText;
 
-getDetails(itemName);
+		}
+		
+		
+	}
+	
+	
+}
+
+
